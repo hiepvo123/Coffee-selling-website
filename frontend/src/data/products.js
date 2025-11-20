@@ -7,7 +7,8 @@ export const products = [
   {
     id: 'espresso',
     name: 'Espresso Signature',
-    price: '65.000đ',
+    price: 65000,
+    displayPrice: '65.000đ',
     description: 'Shot espresso đậm đà, cân bằng giữa crema mịn và hương cacao.',
     image: espresso,
     tag: 'Best Seller',
@@ -15,7 +16,8 @@ export const products = [
   {
     id: 'latte',
     name: 'Latte Caramel',
-    price: '72.000đ',
+    price: 72000,
+    displayPrice: '72.000đ',
     description: 'Sữa tươi đánh bọt mịn, caramel ngọt dịu, hương vị êm ái.',
     image: latte,
     tag: 'New',
@@ -23,7 +25,8 @@ export const products = [
   {
     id: 'cold-brew',
     name: 'Cold Brew Cam Sấy',
-    price: '68.000đ',
+    price: 68000,
+    displayPrice: '68.000đ',
     description: 'Ủ lạnh 18 giờ với vỏ cam sấy, hậu vị tươi mát kéo dài.',
     image: coldBrew,
     tag: 'Chill',
@@ -31,7 +34,8 @@ export const products = [
   {
     id: 'beans',
     name: 'Hạt rang Medium',
-    price: '320.000đ/kg',
+    price: 320000,
+    displayPrice: '320.000đ/kg',
     description: 'Blend Arabica & Robusta rang medium, ngọt hạt dẻ, ít đắng.',
     image: beans,
     tag: 'Whole Bean',

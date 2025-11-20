@@ -1,7 +1,54 @@
+import { useMemo, useState } from 'react'
 import './App.css'
+import MiniCart from './components/MiniCart'
+import ProductList from './components/ProductList'
 import { products } from './data/products'
 
 function App() {
+  const [cartItems, setCartItems] = useState([])
+
+  const formatCurrency = (value) =>
+    new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value)
+
+  const addToCart = (product) => {
+    setCartItems((prev) => {
+      const existing = prev.find((item) => item.id === product.id)
+      if (existing) {
+        return prev.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        )
+      }
+
+      return [...prev, { ...product, quantity: 1 }]
+    })
+  }
+
+  const incrementItem = (id) => {
+    setCartItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, quantity: item.quantity + 1 } : item))
+    )
+  }
+
+  const decrementItem = (id) => {
+    setCartItems((prev) =>
+      prev
+        .map((item) => (item.id === id ? { ...item, quantity: item.quantity - 1 } : item))
+        .filter((item) => item.quantity > 0)
+    )
+  }
+
+  const removeItem = (id) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== id))
+  }
+
+  const cartSummary = useMemo(
+    () => ({
+      totalItems: cartItems.reduce((sum, item) => sum + item.quantity, 0),
+      totalPrice: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    }),
+    [cartItems]
+  )
+
   const benefits = [
     {
       title: 'Nguồn hạt tuyển chọn',
@@ -62,24 +109,22 @@ function App() {
               Chọn nhanh những món bán chạy nhất, từ ly cà phê sáng sảng khoái đến túi hạt rang mang về.
             </p>
           </div>
+          <div className="section__cart-summary" aria-label="Tóm tắt giỏ hàng">
+            <span>{cartSummary.totalItems} món</span>
+            <strong>{formatCurrency(cartSummary.totalPrice)}</strong>
+          </div>
         </div>
-        <div className="products">
-          {products.map((product) => (
-            <article key={product.id} className="product-card">
-              <div className="product-card__image">
-                <span className="product-card__tag">{product.tag}</span>
-                <img src={product.image} alt={product.name} loading="lazy" />
-              </div>
-              <div className="product-card__body">
-                <div className="product-card__header">
-                  <h3>{product.name}</h3>
-                  <span className="product-card__price">{product.price}</span>
-                </div>
-                <p className="product-card__description">{product.description}</p>
-                <button className="btn btn--link">Thêm vào giỏ</button>
-              </div>
-            </article>
-          ))}
+        <div className="product-layout">
+          <ProductList items={products} onAddToCart={addToCart} />
+          <MiniCart
+            items={cartItems}
+            totalItems={cartSummary.totalItems}
+            totalPrice={cartSummary.totalPrice}
+            onIncrement={incrementItem}
+            onDecrement={decrementItem}
+            onRemove={removeItem}
+            formatCurrency={formatCurrency}
+          />
         </div>
       </section>
 
